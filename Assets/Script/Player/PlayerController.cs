@@ -22,8 +22,12 @@ public class PlayerController : MonoBehaviour
         //上述同理
         playerInputAction.Player.Disable();
     }
-    public void MovePlayer()
+    /// <summary>
+    /// 移动玩家
+    /// </summary>
+    /// <param name="speed">移动速度</param>
+    public void MovePlayer(float speed)
     {
-        player.rb.velocity = keyboardMoveAxes * 4f;
+        player.rb.velocity = keyboardMoveAxes * speed;
     }
 }

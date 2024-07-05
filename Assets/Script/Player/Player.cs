@@ -5,35 +5,51 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // 组件
     #region Components
+    [SerializeField]
+    [Header("Components")]  
     public Rigidbody2D rb;
     public PlayerController controller;
     public Animator animator;
     #endregion
-    // 状态
+
     #region States
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerMoveState moveState { get; private set; }
+    public PlayerSneakState sneakState { get; private set; }
+    public PlayerRunState runState { get; private set; }
+    #endregion
+
+    #region Attributes
+    [SerializeField]
+    [Header("Attributes")]
+    public int health;  // 血量
     #endregion
 
     private void Awake()
     {
         stateMachine = new PlayerStateMachine();
         moveState = new PlayerMoveState(this, stateMachine, "isMove");
+        sneakState = new PlayerSneakState(this, stateMachine, "isSneak");
+        runState = new PlayerRunState(this, stateMachine, "isRun");
     }
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         controller = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
-        // 初始化状态机
-        stateMachine.Initialize(moveState);
+        InitPlayer();
     }
     private void Update()
     {
         stateMachine.currentState.Update();
-        controller.MovePlayer();
     }
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
+    private void InitPlayer()
+    {
+        // 初始化状态机
+        stateMachine.Initialize(moveState);
+        // 初始化属性
+        health = 5;
+    }
 }

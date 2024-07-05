@@ -17,6 +17,6 @@ public class PlayerMoveState : PlayerState
     public override void Update()
     {
         base.Update();
-        player.controller.MovePlayer();
+        player.controller.MovePlayer(4f);
     }
 }
