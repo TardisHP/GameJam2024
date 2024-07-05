@@ -5,17 +5,18 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    public Transform target;
-
-    private NavMeshAgent _agent;
+    private NavMeshAgent agent;
 
     private void Start()
     {
-        _agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
     }
-
-    private void Update()
+    public void ChangeSpeed(float speed)
     {
-        _agent.SetDestination(target.position);
+        agent.speed = speed;
+    }
+    public void Move(Transform target)
+    {
+        agent.SetDestination(target.position);
     }
 }

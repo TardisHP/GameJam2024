@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
 
     #region States
     public PlayerStateMachine stateMachine { get; private set; }
+    public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
     public PlayerSneakState sneakState { get; private set; }
     public PlayerRunState runState { get; private set; }
@@ -24,11 +25,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Header("Attributes")]
     public int health;  // 血量
+    public bool isPlaySound;
+    public bool canAttack;
     #endregion
 
     private void Awake()
     {
         stateMachine = new PlayerStateMachine();
+        idleState = new PlayerIdleState(this, stateMachine, "isIdle");
         moveState = new PlayerMoveState(this, stateMachine, "isMove");
         sneakState = new PlayerSneakState(this, stateMachine, "isSneak");
         runState = new PlayerRunState(this, stateMachine, "isRun");
@@ -38,6 +42,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         controller = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
+
         InitPlayer();
     }
     private void Update()
@@ -48,8 +53,10 @@ public class Player : MonoBehaviour
     private void InitPlayer()
     {
         // 初始化状态机
-        stateMachine.Initialize(moveState);
+        stateMachine.Initialize(idleState);
         // 初始化属性
         health = 5;
+        isPlaySound = false;
+        canAttack = true;
     }
 }
